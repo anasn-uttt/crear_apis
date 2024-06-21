@@ -1,0 +1,34 @@
+{
+    "router": [
+        {
+            "model": "7206VXR",
+            "so": "Cisco IOS",
+            "type": "hardware",
+            "vendor": "Cisco"
+        }
+    ],
+    "server1": [
+        {
+            "linux distribution": "Mint",
+            "name": "server_Sergio",
+            "remote_conection": "SSH",
+            "service": "WEB"
+        }
+    ],
+    "server2": [
+        {
+            "linux distribution": "Centos 8",
+            "name": "server_Gemma",
+            "service1": "DNS",
+            "service2": "WEB"
+        }
+    ],
+    "server3": [
+        {
+            "linux distribution": "Centos 8",
+            "name": "server_Ana",
+            "service1": "FTP",
+            "service2": "DHCP"
+        }
+    ]
+}

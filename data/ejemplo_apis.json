@@ -1,0 +1,53 @@
+{
+    "response2": {
+        "dns": {
+            "geo": "United States - Google LLC",
+            "ip": "172.253.251.122"
+        }
+    },
+    "response3": [
+        { 
+            "api": {
+                "enabled": true
+            },
+            "cloud": {
+                "region": {
+                    "host": {
+                        "name": "United States"
+                    },
+                    "name": "North America"
+                }
+            },
+            "id": "1215707",
+            "licensing": {
+                "model": "co-term"
+            },
+            "management": {
+                "details": [
+                    {
+                        "name": "customer number",
+                        "value": "03486604"
+                    }
+                ]
+            },
+            "name": "API Demo Organization",
+            "url": "https://n394.meraki.com/o/Yja5Xd/manage/organization/overview"
+        }
+    ],
+    "response_api": {
+        "as": "AS18881 TELEF\u00d4NICA BRASIL S.A",
+        "city": "Rio de Janeiro",
+        "country": "Brazil",
+        "countryCode": "BR",
+        "isp": "TELEF\u00d4NICA BRASIL S.A",
+        "lat": -22.9201,
+        "lon": -43.0811,
+        "org": "Global Village Telecom",
+        "query": "177.17.9.4",
+        "region": "RJ",
+        "regionName": "Rio de Janeiro",
+        "status": "success",
+        "timezone": "America/Sao_Paulo",
+        "zip": "24000"
+    }
+}
