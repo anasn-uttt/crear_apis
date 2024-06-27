@@ -33,6 +33,45 @@ def get_banner():
         print('Error al consumir la API para el modulo {module}')
 
 
+def put_banner():
+    banner = {
+        "Cisco-IOS-XE-native:motd": {
+        "banner": "## SOLO PERSONAL AUTORIZADO ## "
+    }
+    }
+
+    module="data/Cisco-IOS-XE-native:native/banner/motd"
+    resp = requests.put(f'{api_url}{module}', data=json.dumps(banner), auth=basicauth, headers=headers, verify=False)
+    if resp.status_code == 204:
+        print('Actualización exitosa')
+    else:
+        print(f'Error, no se puede realizar la actualización')
+
+def post_loopback():
+    dloopback = json.dumps({
+  "ietf-interfaces:interface": {
+    "name": "Loopback100",
+    "description": "Configured by RESTCONF",
+    "type": "iana-if-type:softwareLoopback",
+    "enabled": True,
+    "ietf-ip:ipv4": {
+      "address": [
+        {
+          "ip": "172.16.100.1",
+          "netmask": "255.255.255.0"
+        }
+      ]
+    }
+  }
+})
+    module = "data/ietf-interfaces:interfaces"
+    resp = requests.post(f'{api_url}{module}', auth=basicauth, headers=headers,data=dloopback, verify=False)
+    if resp.status_code == 201:
+        print(f"Se insertó correctamente {dloopback}")
+    else:
+        print(f"Error al insertar el modulo {module}")
+
+
 
 if __name__ == '__main__':
     #module:operations, data
@@ -42,6 +81,7 @@ if __name__ == '__main__':
                }
     basicauth = ("cisco", "cisco123!")
     #get_interfaces()
-    get_restconf_native()
-
-    
+    #get_restconf_native()
+    #get_banner()
+    #put_banner()
+    post_loopback()
