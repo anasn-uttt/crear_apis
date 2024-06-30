@@ -2,11 +2,11 @@
     "response2": {
         "dns": {
             "geo": "United States - Google LLC",
-            "ip": "172.253.251.122"
+            "ip": "172.253.251.60"
         }
     },
     "response3": [
-        { 
+        {
             "api": {
                 "enabled": true
             },
