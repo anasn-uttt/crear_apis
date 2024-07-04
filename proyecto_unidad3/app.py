@@ -1,8 +1,5 @@
 from flask import Flask, request, render_template,render_template, redirect, url_for
 import json
-#import paramiko
-import time
-import re
 import requests
 requests.packages.urllib3.disable_warnings()
 
@@ -19,8 +16,6 @@ def dhcpool():
     
    
     if request.method == 'POST' and request.form.get('action') == 'get':
-        #print('la apppp¿pp¿')
-    #print(api_url)
         module = "data/Cisco-IOS-XE-native:native/ip/dhcp"
         resp = requests.get(f'{api_url}{module}',  auth=basicauth, headers=headers, verify=False)
         consulta=resp.json()
@@ -35,13 +30,6 @@ def dhcpool():
         dns=request.form.get('DNS-input')
         domain=request.form.get('Domain-input')
         
-        
-        """pool_config ={'Cisco-IOS-XE-native:dhcp': {'Cisco-IOS-XE-dhcp:pool': [
-            {'id': id, 'default-router': {'default-router-list': [dafault]}, 
-             'dns-server': {'dns-server-list': [dns]}, 
-             'domain-name': domain, 
-             'network': {'primary-network': {'number': network, 'mask': mask}}}]}}
-        """
         pool_config = {
         "Cisco-IOS-XE-dhcp:pool": [
             {
@@ -67,26 +55,6 @@ def dhcpool():
         ]
     }
         
-        """{
-        "Cisco-IOS-XE-dhcp:pool": [
-            {
-                "id": id,
-                "network": {
-                    "primary": {
-                        "address": network,
-                        "mask": mask
-                    }
-                },
-                "default-router": {
-                    "default-router-list": [default]
-                },
-                "dns-server": {
-                    "dns-server-list": [dns]
-                },
-                "domain-name": domain
-            }
-        ]
-    }"""
         
         print(pool_config)
         print("Networksfgvbajvh aeocg repa")
@@ -115,13 +83,12 @@ def dhcpool():
         if 'Cisco-IOS-XE-dhcp:pool' in config['Cisco-IOS-XE-native:dhcp']:
             pools = config['Cisco-IOS-XE-native:dhcp']['Cisco-IOS-XE-dhcp:pool']
 
-            # Filtra los pools para eliminar 'SubredD'
+           
             updated_pools = [pool for pool in pools if pool['id'] != 'SubredD']
 
-            # Actualiza la configuración con los pools restantes
             config['Cisco-IOS-XE-native:dhcp']['Cisco-IOS-XE-dhcp:pool'] = updated_pools
 
-            # Realiza la solicitud PUT a la API para subir la configuración actualizada
+            
             update_resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=config, verify=False)
 
             if update_resp.status_code == 204:
@@ -145,17 +112,13 @@ def linevty():
         
     if request.method == 'POST' and request.form.get('action') == 'get':
         module = "data/Cisco-IOS-XE-native:native/line/vty"
-        #print('la apppp¿pp¿')
-    #print(api_url)
         resp = requests.get(f'{api_url}{module}',  auth=basicauth, headers=headers, verify=False)
         consulta = resp.json()
         print(consulta)
         if resp.status_code == 200:
                 consulta = resp.json()
-                #print("Líneas VTY configuradas correctamente.")
         else:
                 print(f'Error al configurar las líneas VTY')
-                #print(resp.text)
             
     if request.method == 'POST' and request.form.get('action') == 'agregarline':   
         module = "data/Cisco-IOS-XE-native:native/line/vty"
@@ -169,30 +132,6 @@ def linevty():
             loginlocal=[None]
         else:
              loginlocal=[]
-        #print("vamos bieeen")
-        #print(tipo,name,description,ip,mask)"""
-        vty2 = {
-            "Cisco-IOS-XE-native:vty": [
-                {
-                    "first": primera,
-                    "last": ultima,
-                    "login": {"local": loginlocal},
-                    "password": {"secret": contra},
-                    "transport": {"input": {"input": [transport]}}
-                }
-            ]
-        }
-        vty5={
-            "Cisco-IOS-XE-native:vty": [
-                {
-                    "first": primera,
-                    "last": ultima,
-                    "login": {"local": [None] if not loginlocal else []},
-                    "password": {"secret": contra},
-                    "transport": {"input": {"input": [transport]}}
-                }
-            ]
-        }
         vty = {
      "Cisco-IOS-XE-native:vty": [
             {
@@ -211,10 +150,6 @@ def linevty():
                 }
             } ]}
         
-        
-               #print(vty)
-        
-        #resp = requests.patch(f'{api_url}{module}', json=vty, auth=basicauth, headers=headers, verify=False)
         resp = requests.patch(f"{api_url}{module}", json=vty, auth=basicauth, headers=headers, verify=False)
         print(vty)  
         print(resp.status_code)
@@ -239,7 +174,7 @@ def linevty():
                 print("aisbebebe",updated_vty_config)
                 response = requests.patch(f'{api_url}{module}', json=updated_vty_config, auth=basicauth, headers=headers, verify=False)
             
-        # Enviar la solicitud PATCH para actualizar la configuración
+  
         try:
             response = requests.patch(f'{api_url}{module}', json=updated_vty_config, auth=basicauth, headers=headers, verify=False)
             
@@ -247,12 +182,9 @@ def linevty():
                 print("Comando enviado correctamente.")
             else:
                 print(f"Error al enviar el comando. Código de estado: {response.status_code}")
-                print("Respuesta:", response.text)  # Imprimir la respuesta para depuración
+                print("Respuesta:", response.text)  
         except requests.exceptions.RequestException as e:
-            print("Error en la solicitud:", e)
-
-       
-          
+            print("Error en la solicitud:", e)   
     
     return render_template('linevty.html', vty_list=consulta.get('Cisco-IOS-XE-native:vty', []))
 
@@ -269,12 +201,9 @@ def interface():
         
     if request.method == 'POST' and request.form.get('action') == 'get':
         module="data/ietf-interfaces:interfaces"
-        #print('la apppp¿pp¿')
-    #print(api_url)
         resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
         if resp.status_code == 200:
                 consulta = resp.json()
-                #consulta = "holaaaaaass"
                 print(consulta)
         else:
             print(f'Error al consumir la API para el modulo {module}')
@@ -339,18 +268,14 @@ def configure():
 
     if request.method == 'POST' and request.form.get('action') == 'get':
         module = "data/Cisco-IOS-XE-native:native"
-        #print('la apppp¿pp¿')
-    #print(api_url)
         resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
 
         if resp.status_code == 200:
             consultaaaa = json.dumps(resp.json(), indent=4)
-            #print("swwwwwwwwwwwwwwwwwwwwwwwwwww3333i se oegoooo")
         else:
             print(f'Error al consumir la API para el modulo {module}')
         
-    
-    
+       
     return render_template('configure.html', api_url=api_url, headers=headers, basicauth=basicauth,consultaaaa=consultaaaa)
 @app.route('/index')
 def index():
@@ -363,15 +288,12 @@ def index():
     print('yaestamosenindex')
     print(f'API URL: {api_url}')
     
-    #configure_url = url_for('configure', api_url=api_url, headers=json.dumps(headers), basicauth=json.dumps(basicauth))
-    
     return render_template('index.html', api_url=api_url, headers=headers, basicauth=basicauth)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
     
     if request.method == 'POST':
-        #ip = request.form.get('ip')
         user = request.form.get('usuario')
         passs = request.form.get('contrasena')
         
@@ -387,14 +309,9 @@ def login():
              print("yase pasosoooadjgalghoiaseg")
              
         else:
-            print(f'Error al ingresar al router')   
-         
-        #return redirect(url_for('index', api_url=api_url, headers=json.dumps(headers), basicauth=json.dumps(basicauth)))     
+            print(f'Error al ingresar al router')       
         return redirect(url_for('index', api_url=api_url, headers=headers, basicauth=basicauth))
-    
-    
-        
-        
+                 
     return render_template('login.html')
 
 if __name__ == '__main__':
