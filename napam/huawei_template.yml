@@ -1,0 +1,11 @@
+interfaces:
+    Ethernet1/0/1:
+       description: "to_IOS-R3 Gi0/1 External"
+       ipv4_addr: 172.17.3.2
+       ipv4_mask: 255.255.255.252
+bgp:
+    as: 200
+    neighbors:
+        ios_router:
+            as: 300
+            ipv4_addr: 172.17.3.1

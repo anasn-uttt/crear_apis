@@ -1,0 +1,13 @@
+{% for if_name,if_data in interfaces.items() %}
+interface {{if_name}}
+ description {{if_data.description}}
+ ip address {{if_data.ipv4_addr}} {{if_data.ipv4_mask}}
+ no shutdown
+{% endfor %}
+!
+router bgp {{bgp.as}}
+ neighbor {{bgp.neighbors.vrp_router.ipv4_addr}} remote-as {{bgp.neighbors.vrp_router.as}}
+ !
+ address-family ipv4
+  neighbor {{bgp.neighbors.vrp_router.ipv4_addr}} activate
+ exit-address-family

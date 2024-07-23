@@ -1,0 +1,14 @@
+{% for if_name,if_data in interfaces.items() %}
+interface {{if_name}}
+ description {{if_data.description}}
+ ip address {{if_data.ipv4_addr}} {{if_data.ipv4_mask}}
+ undo shutdown
+ undo dcn
+{% endfor %}
+#
+bgp {{bgp.as}}
+ peer {{bgp.neighbors.ios_router.ipv4_addr}} as-number {{bgp.neighbors.ios_router.as}}
+ #
+ ipv4-family unicast
+  peer {{bgp.neighbors.ios_router.ipv4_addr}} enable
+#
